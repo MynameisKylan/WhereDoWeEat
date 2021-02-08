@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
   before_action :authenticate_user_from_token!
 
   def authenticate_user_from_token!
@@ -34,5 +34,6 @@ class ApplicationController < ActionController::Base
   # Renders a 401 error
   def authentication_error
     # User's stoken is either invalid or not the right format
-    render json: {error: t('unauthorized')}, status: 401 # Authentication timeout
+    render json: {error: 'unauthorized'}, status: 401 # Authentication timeout
+  end
 end

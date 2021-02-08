@@ -17,6 +17,7 @@ class User < ApplicationRecord
   private
 
   def update_access_token!
-    self.access_token = "#{self.id}:#{Devise.friendly_token}"
+    self.access_token = "#{id}:#{Devise.friendly_token}"
+    save
   end
 end
