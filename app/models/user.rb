@@ -5,6 +5,9 @@ class User < ApplicationRecord
 
   after_create :update_access_token!
 
+  has_many :ratings
+  has_many :rated_restaurants, through: :ratings, source: :restaurant
+
   has_many :forward_friendships, class_name: 'Friendship', foreign_key: :user_id
   has_many :forward_friends, through: :forward_friendships, source: :friend
   has_many :inverse_friendships, class_name: 'Friendship', foreign_key: :friend_id
