@@ -1,3 +1,5 @@
+# Not used
+
 module V1
   class SessionSerializer
     include JSONAPI::Serializer

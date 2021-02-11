@@ -10,7 +10,9 @@ const SignIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('/v1/login', user)
+    axios.post('/users/sign_in', {
+      user: user
+    })
     .then((resp) => {
       console.log(resp)
     })
