@@ -25,6 +25,7 @@ gem 'devise'
 gem 'jsonapi-serializer'
 gem 'rack-cors'
 gem 'figaro'
+gem 'jwt'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
