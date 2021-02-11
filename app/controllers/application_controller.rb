@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   before_action :authorized
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   def encode_token(payload)
     JWT.encode(payload, ENV['jwt_secret'])
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::API
     else
       authentication_error
     end
+  end
+
+  protected def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
 
   private
