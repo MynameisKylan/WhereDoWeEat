@@ -3,8 +3,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :validatable, :registerable
 
-  after_create :update_access_token!
-
   has_many :ratings
   has_many :rated_restaurants, through: :ratings, source: :restaurant
 
@@ -15,12 +13,5 @@ class User < ApplicationRecord
 
   def friends
     forward_friends + inverse_friends
-  end
-
-  private
-
-  def update_access_token!
-    self.access_token = "#{id}:#{Devise.friendly_token}"
-    save
   end
 end
