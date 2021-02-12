@@ -1,7 +1,7 @@
 class SessionSerializer
   include JSONAPI::Serializer
 
-  attributes :email, :access_token
+  attributes :email
 
   attribute :token_type do
     'Bearer'

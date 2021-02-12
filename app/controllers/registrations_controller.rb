@@ -2,6 +2,11 @@ class RegistrationsController < Devise::RegistrationsController
   skip_before_action :authorized
   respond_to :json
 
+  def respond_with(resource, opts = {})
+    token = encode_token({ user_id: resource.id })
+    render json: { user: resource, token: token }
+  end
+
   # POST /resource
   # Overwritten to render error message on failure to create User
   def create
@@ -22,7 +27,7 @@ class RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      render json: { error: 'Email has already been registered' }
+      render json: { errors: resource.errors }
     end
   end
 end
