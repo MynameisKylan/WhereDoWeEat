@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   devise_for :users, defaults: { format: :json }, controllers: { sessions: 'sessions', registrations: 'registrations' }
 
-  resource :ratings, only: [:create]
+  resource :ratings, only: [:create, :update]
 
   # Alternative namespace and sessions controller - Not currently used
   # namespace :v1, defaults: { format: :json } do

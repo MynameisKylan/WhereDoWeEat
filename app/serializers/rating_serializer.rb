@@ -1,5 +1,5 @@
 class RatingSerializer
   include JSONAPI::Serializer
 
-  attributes :value
+  attributes :value, :restaurant_id
 end
