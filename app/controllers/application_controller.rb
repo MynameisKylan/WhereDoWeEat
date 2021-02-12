@@ -6,26 +6,10 @@ class ApplicationController < ActionController::API
     JWT.encode(payload, ENV['jwt_secret'])
   end
 
-  def authenticate_user_from_token!
-    auth_header = request.authorization
-
-    if auth_token
-      token = auth_header.split(' ')[1]
-      authenticate_with_auth_token(token)
-    else
-      authentication_error
-    end
-  end
-
-  protected def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
-  end
-
-  private
-
   def decoded_token
+    auth_header = request.authorization
     if auth_header
-      token = auth_header.split(' ')[1]
+      token = auth_header#.split(' ')[1]
       begin
         JWT.decode(token, ENV['jwt_secret'], true, algorithm: 'HS256')
       rescue JWT::DecodeError
@@ -33,6 +17,23 @@ class ApplicationController < ActionController::API
       end
     end
   end
+
+  # def authenticate_user_from_token!
+  #   auth_header = request.authorization
+
+  #   if auth_token
+  #     token = auth_header.split(' ')[1]
+  #     authenticate_with_auth_token(token)
+  #   else
+  #     authentication_error
+  #   end
+  # end
+
+  protected def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
+  end
+
+  private
 
   def logged_in_user
     if decoded_token
