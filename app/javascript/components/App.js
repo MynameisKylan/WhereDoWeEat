@@ -3,9 +3,11 @@ import { Route, Switch } from "react-router-dom";
 import Home from "./Home/Home";
 import SignUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
+import Restaurants from './Restaurants/Restaurants';
+import Party from './Party/Party';
 
 const App = () => {
-  const [accessToken, setAccessToken] = useState(localStorage.getItem('token'));
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("token"));
 
   return (
     <Switch>
@@ -29,6 +31,20 @@ const App = () => {
         render={() => (
           <SignIn setAccessToken={setAccessToken} accessToken={accessToken} />
         )}
+      />
+      <Route
+        exact
+        path="/party"
+        render={() => {
+          <Party setAccessToken={setAccessToken} accessToken={accessToken} />;
+        }}
+      />
+      <Route
+        exact
+        path="/restaurants"
+        render={() => {
+          <Restaurants setAccessToken={setAccessToken} accessToken={accessToken} />;
+        }}
       />
     </Switch>
   );
