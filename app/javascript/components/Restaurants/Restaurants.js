@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
+import Restaurant from "./Restaurant";
 
 const Restaurants = () => {
   const [searchParams, setSearchParams] = useState({ term: "", location: "" });
+  const [restaurants, setRestaurants] = useState([]);
 
   const handleChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
@@ -22,8 +24,13 @@ const Restaurants = () => {
       )
       .then((resp) => {
         console.log(resp);
+        setRestaurants(resp.data);
       });
   };
+
+  const restaurantCards = restaurants.map((restaurant) => (
+    <Restaurant key={restaurant.name} data={restaurant} />
+  ));
 
   return (
     <div>
@@ -45,6 +52,8 @@ const Restaurants = () => {
         />
         <button type="submit">Search</button>
       </form>
+
+      {restaurantCards}
     </div>
   );
 };
