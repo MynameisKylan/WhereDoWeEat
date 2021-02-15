@@ -26,6 +26,7 @@ gem 'jsonapi-serializer'
 gem 'rack-cors'
 gem 'figaro'
 gem 'jwt'
+gem 'faraday'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
