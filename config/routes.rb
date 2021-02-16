@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     post :search, on: :member
   end
 
+  resource :users, only: [:show]
   # Alternative namespace and sessions controller - Not currently used
   # namespace :v1, defaults: { format: :json } do
     # resource :login, only: [:create], controller: :sessions
