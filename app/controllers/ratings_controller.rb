@@ -22,7 +22,7 @@ class RatingsController < ApplicationController
   # params: restaurant_id, value
   def update
     user_id = decoded_token[0]['user_id'].to_i
-    restaurant_id = rating_params[:restaurant_id]
+    restaurant_id = Restaurant.find_by(yelp_id: rating_params[:yelp_id]).id
     rating = Rating.find_by(restaurant_id: restaurant_id, user_id: user_id)
     rating.value = rating_params[:value]
     if rating.save
@@ -35,6 +35,6 @@ class RatingsController < ApplicationController
   private
 
   def rating_params
-    params.require(:rating).permit(:value, :yelp_id, :restaurant_id)
+    params.require(:rating).permit(:value, :yelp_id)
   end
 end

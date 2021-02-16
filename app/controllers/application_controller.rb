@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
     JWT.encode(payload, ENV['jwt_secret'])
   end
 
+  # Return format: [{"user_id"=>X}, {"alg"=>"XXXX"}]
   def decoded_token
     auth_header = request.authorization
     if auth_header
