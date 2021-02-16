@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Navbar from "../Navbar/Navbar";
 
 const Friends = () => {
   const [searchName, setSearchName] = useState("");
@@ -19,16 +20,15 @@ const Friends = () => {
         { headers: { Authorization: localStorage.getItem("token") } }
       )
       .then((resp) => {
-        console.log(resp)
-        setResultMessage(resp.data.message)
+        console.log(resp);
+        setResultMessage(resp.data.message);
       });
   };
 
   return (
     <div>
-      <div>
-        {resultMessage}
-      </div>
+      <Navbar active='friends' />
+      <div>{resultMessage}</div>
       Find Friends By Username
       <form onSubmit={handleSubmit}>
         <input
