@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Party = () => {
+const Friends = () => {
   return (
     <div>
-      #Party
+      #FRIENDS
     </div>
   )
 }
 
-export default Party
+export default Friends

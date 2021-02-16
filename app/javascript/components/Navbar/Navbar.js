@@ -28,6 +28,12 @@ const Navbar = (props) => {
       <div className={restaurantsClass}>
         <Link to={'/restaurants'}>Rate Restaurants</Link>
       </div>
+      <div>
+        <Link to={'/party'}>Create A Party</Link>
+      </div>
+      <div>
+        <Link to={'/friends'}>Add Friends</Link>
+      </div>
     </nav>
   )
 }

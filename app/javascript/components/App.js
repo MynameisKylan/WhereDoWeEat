@@ -5,9 +5,28 @@ import SignUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
 import Restaurants from "./Restaurants/Restaurants";
 import Party from "./Party/Party";
+import Friends from "./Friends/Friends";
 
 const App = () => {
   const [accessToken, setAccessToken] = useState(localStorage.getItem("token"));
+
+  // https://stackoverflow.com/questions/43164554/how-to-implement-authenticated-routes-in-react-router-4
+  function PrivateRoute ({ component: Component, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={(props) =>
+          localStorage.getItem('token') ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{ pathname: "/signin", state: { redirected: true } }}
+            />
+          )
+        }
+      />
+    );
+  };
 
   return (
     <Switch>
@@ -40,34 +59,17 @@ const App = () => {
           />
         )}
       />
-      <Route
-        exact
+      <PrivateRoute
         path="/party"
-        render={() =>
-          localStorage.getItem("token") ? (
-            <Party setAccessToken={setAccessToken} accessToken={accessToken} />
-          ) : (
-            <Redirect
-              to={{ pathname: "/signin", state: { redirected: true } }}
-            />
-          )
-        }
+        component={Party}
       />
-      <Route
-        exact
+      <PrivateRoute
         path="/restaurants"
-        render={() =>
-          localStorage.getItem("token") ? (
-            <Restaurants
-              setAccessToken={setAccessToken}
-              accessToken={accessToken}
-            />
-          ) : (
-            <Redirect
-              to={{ pathname: "/signin", state: { redirected: true } }}
-            />
-          )
-        }
+        component={Restaurants}
+      />
+      <PrivateRoute
+        path="/friends"
+        component={Friends}
       />
     </Switch>
   );
