@@ -23,7 +23,6 @@ const SignUp = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("ATTEMPTING TO CREATE USER:");
-    console.log(user);
     axios
       .post("/users", {
         user: user,
@@ -39,6 +38,7 @@ const SignUp = (props) => {
           history.push("/");
         } else {
           setErrors(resp.data.errors);
+          setUser({...user, password: '', password_confirmation: ''})
         }
       });
   };
@@ -67,6 +67,7 @@ const SignUp = (props) => {
           placeholder="Username"
         />
         <input
+          type='email'
           name="email"
           value={user.email}
           onChange={handleChange}

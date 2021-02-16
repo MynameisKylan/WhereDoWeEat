@@ -6,10 +6,11 @@ import Error from "../Error";
 
 const SignIn = (props) => {
   const [user, setUser] = useState({ email: "", password: "" });
+  const redirected = props.location.state
+    ? props.location.state.redirected
+    : false;
   const [errorMessage, setErrorMessage] = useState(
-    props.location.state.redirected
-      ? "You must be signed in to view this page."
-      : ""
+    redirected ? "You must be signed in to view this page." : ""
   );
   const history = useHistory();
   const handleChange = (e) => {
@@ -31,6 +32,7 @@ const SignIn = (props) => {
           history.push("/");
         } else {
           setErrorMessage("Invalid email or password");
+          setUser({...user, password: ''})
         }
       });
   };
