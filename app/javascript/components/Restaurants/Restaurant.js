@@ -67,11 +67,11 @@ const Restaurant = ({ data }) => {
   const ratingOptions = [5, 4, 3, 2, 1].map((score, index) => {
     return (
       <Fragment key={score}>
-        {/* actual input field is hidden, correct value is checked when the corresponding label (stars UI) is clicked, calling props.setRating, which updates props.review */}
+        {/* actual input field is hidden, correct value is checked when the corresponding label (stars UI) is clicked */}
         <input
           type="radio"
           value={score}
-          name="rating"
+          name={`rating-${data.id}`}
           id={`rating-${score}`}
           checked={rating === score}
           onChange={() => {}}
