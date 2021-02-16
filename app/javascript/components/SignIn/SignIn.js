@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Header from '../Header'
-import Error from '../Error'
+import Header from "../Header";
+import Error from "../Error";
 
 const SignIn = (props) => {
   const [user, setUser] = useState({ email: "", password: "" });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(
+    props.location.state.redirected
+      ? "You must be signed in to view this page."
+      : ""
+  );
   const history = useHistory();
-
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -20,25 +23,26 @@ const SignIn = (props) => {
         user: user,
       })
       .then((resp) => {
-        console.log(resp)
+        console.log(resp);
         if (resp.data.token) {
-          const token = resp.data.token
-          props.setAccessToken(token)
-          localStorage.setItem('token', token)
-          history.push('/')
+          const token = resp.data.token;
+          props.setAccessToken(token);
+          localStorage.setItem("token", token);
+          history.push("/");
         } else {
-          setErrorMessage('Invalid email or password')
+          setErrorMessage("Invalid email or password");
         }
       });
   };
 
   return (
     <div>
-      <Header hasAccessToken={ props.accessToken ? true : false }/>
+      <Header hasAccessToken={props.accessToken ? true : false} />
       Sign In Page
-      { errorMessage ? <Error message={errorMessage} /> : null }
+      {errorMessage ? <Error message={errorMessage} /> : null}
       <form onSubmit={handleSubmit}>
         <input
+          type="email"
           name="email"
           value={user.email}
           onChange={handleChange}

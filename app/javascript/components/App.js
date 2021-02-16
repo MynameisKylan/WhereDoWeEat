@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "./Home/Home";
 import SignUp from "./SignUp/SignUp";
 import SignIn from "./SignIn/SignIn";
@@ -21,33 +21,53 @@ const App = () => {
       <Route
         exact
         path="/signup"
-        render={() => (
-          <SignUp setAccessToken={setAccessToken} accessToken={accessToken} />
+        render={(props) => (
+          <SignUp
+            {...props}
+            setAccessToken={setAccessToken}
+            accessToken={accessToken}
+          />
         )}
       />
       <Route
         exact
         path="/signin"
-        render={() => (
-          <SignIn setAccessToken={setAccessToken} accessToken={accessToken} />
+        render={(props) => (
+          <SignIn
+            {...props}
+            setAccessToken={setAccessToken}
+            accessToken={accessToken}
+          />
         )}
       />
       <Route
         exact
         path="/party"
-        render={() => (
-          <Party setAccessToken={setAccessToken} accessToken={accessToken} />
-        )}
+        render={() =>
+          localStorage.getItem("token") ? (
+            <Party setAccessToken={setAccessToken} accessToken={accessToken} />
+          ) : (
+            <Redirect
+              to={{ pathname: "/signin", state: { redirected: true } }}
+            />
+          )
+        }
       />
       <Route
         exact
         path="/restaurants"
-        render={() => (
-          <Restaurants
-            setAccessToken={setAccessToken}
-            accessToken={accessToken}
-          />
-        )}
+        render={() =>
+          localStorage.getItem("token") ? (
+            <Restaurants
+              setAccessToken={setAccessToken}
+              accessToken={accessToken}
+            />
+          ) : (
+            <Redirect
+              to={{ pathname: "/signin", state: { redirected: true } }}
+            />
+          )
+        }
       />
     </Switch>
   );
