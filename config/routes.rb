@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     post :search, on: :member
   end
 
-  resource :friendships, only: [:create]
+  resource :friendships, only: [:show, :create, :remove] do
+    post :remove, on: :member
+  end
 
   resource :users, only: [:show]
   # Alternative namespace and sessions controller - Not currently used
