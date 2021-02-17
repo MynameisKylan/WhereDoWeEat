@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 const Nav = styled.nav`
@@ -23,6 +23,7 @@ const NavLink = styled(Link)`
 `;
 
 const Navbar = (props) => {
+  const history = useHistory();
 
   const logout = () => {
     localStorage.removeItem("token");
