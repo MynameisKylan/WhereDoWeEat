@@ -14,11 +14,11 @@ const Friends = () => {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((resp) => {
-        console.log(resp);
         setFriends(resp.data);
       });
   }, []);
 
+  // Remove friend from state
   const removeFriend = (username) => {
     setFriends(friends.filter((name) => name !== username));
   };
@@ -27,6 +27,7 @@ const Friends = () => {
     setSearchName(e.target.value);
   };
 
+  // Add Friend
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,6 +48,24 @@ const Friends = () => {
       });
   };
 
+  // Remove Friend
+  const handleClick = (username) => {
+    axios
+      .post(
+        "/friendships/remove",
+        { friend: { username: username } },
+        { headers: { Authorization: localStorage.getItem("token") } }
+      )
+      .then((resp) => {
+        console.log(resp);
+        removeFriend(username);
+        setResultMessage(resp.data.message);
+      })
+      .catch((resp) => {
+        console.log(resp);
+      });
+  };
+
   return (
     <div>
       <Navbar active="friends" />
@@ -64,9 +83,9 @@ const Friends = () => {
       {friends.map((friend) => (
         <Friend
           key={friend}
-          setResultMessage={setResultMessage}
-          removeFriend={() => removeFriend(friend)}
           username={friend}
+          handleClick={() => handleClick(friend)}
+          action='Remove Friend'
         />
       ))}
     </div>
