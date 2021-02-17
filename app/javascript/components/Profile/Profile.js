@@ -21,7 +21,7 @@ const Profile = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar active='profile' />
       <div>Signed in as {`${user.username}`}</div>
     </div>
   );

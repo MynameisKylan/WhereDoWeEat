@@ -31,11 +31,7 @@ const App = () => {
 
   return (
     <Switch>
-      <Route
-        exact
-        path="/profile"
-        component={Profile}
-      />
+      <PrivateRoute path="/profile" component={Profile} />
       <Route
         exact
         path="/"
