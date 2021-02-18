@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Friend from "../Friends/Friend";
+import Rating from './Rating';
 import styled from "styled-components";
 
 const ColWrapper = styled.div`
@@ -12,7 +13,22 @@ const Party = () => {
   const [party, setParty] = useState([]);
   const [friends, setFriends] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [user, setUser] = useState('')
 
+  // set current user and party on initial load
+  useEffect(() => {
+    axios
+      .get("/users", {
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+      .then((resp) => {
+        const username = resp.data.data.attributes.username
+        setUser(username)
+        setParty([...party, username]);
+      });
+  }, []);
+
+  // get friendlist on initial load
   useEffect(() => {
     axios
       .get("/friendships", {
@@ -34,16 +50,18 @@ const Party = () => {
   };
 
   const findRestaurants = () => {
-    axios.post(
-      "/party/search",
-      { party: party },
-      {
-        headers: { Authorization: localStorage.getItem("token") },
-      }
-    )
-    .then((resp) => {
-      console.log(resp)
-    });
+    axios
+      .post(
+        "/party/search",
+        { party: party },
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      )
+      .then((resp) => {
+        console.log(resp);
+        setRestaurants(resp.data);
+      });
   };
 
   const friendsList = friends.map((friend) => (
@@ -52,6 +70,7 @@ const Party = () => {
       username={friend}
       handleClick={() => addToParty(friend)}
       action="Add To Party"
+      self={friend == user}
     />
   ));
 
@@ -61,6 +80,7 @@ const Party = () => {
       username={friend}
       handleClick={() => removeFromParty(friend)}
       action="Remove From Party"
+      self={friend == user}
     />
   ));
 
@@ -78,7 +98,12 @@ const Party = () => {
           <h2>Add Friends</h2>
           {friendsList}
         </div>
-        <div></div>
+        <div>
+          <h2>Results</h2>
+          {restaurants.map((res) => (
+            <Rating key={res.data.name} name={res.data.name} score={res.weighted_rating} price={res.data.price} categories={res.data.categories} />
+          ))}
+        </div>
       </ColWrapper>
     </div>
   );
