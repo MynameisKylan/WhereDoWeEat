@@ -32,10 +32,10 @@ class PartiesController < ApplicationController
     restaurants = Restaurant.where(id: id_list).map do |restaurant|
       ratings = Rating.where(restaurant_id: restaurant.id, user_id: user_ids) #restaurant.ratings
       count = ratings.count
-      big_q = 3
+      big_q = user_ids.length
       avg_rating = ratings.average(:value)
       # https://math.stackexchange.com/questions/942738/algorithm-to-calculate-rating-based-on-multiple-reviews-using-both-review-score
-      weighted_rating = user_ids.length == 1 ? avg_rating : (0.5 * avg_rating + 5 * 0.5 * (1 - 2.71828**(-1 * count.to_f / big_q))).to_f.round(1)
+      weighted_rating = user_ids.length == 1 ? avg_rating : (0.8 * avg_rating + 5 * 0.2 * (1 - 2.71828**(-1 * count.to_f / big_q))).to_f.round(1)
       { yelp_id: restaurant.yelp_id,
         weighted_rating: weighted_rating }
     end
