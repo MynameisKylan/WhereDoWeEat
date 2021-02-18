@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     post :search, on: :member
   end
 
+  resource :party, only: [:search] do
+    post :search, on: :member
+  end
+
   resource :friendships, only: [:show, :create, :remove] do
     post :remove, on: :member
   end
