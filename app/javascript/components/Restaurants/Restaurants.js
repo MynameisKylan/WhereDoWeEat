@@ -6,6 +6,7 @@ import Restaurant from "./Restaurant";
 const Restaurants = () => {
   const [searchParams, setSearchParams] = useState({ term: "", location: "" });
   const [restaurants, setRestaurants] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
@@ -23,8 +24,11 @@ const Restaurants = () => {
         { headers: { Authorization: localStorage.getItem("token") } }
       )
       .then((resp) => {
-        console.log(resp);
-        setRestaurants(resp.data);
+        if (resp.data.error) {
+          setErrorMessage(resp.data.error)
+        } else{
+          setRestaurants(resp.data);
+        }
       });
   };
 
@@ -35,6 +39,9 @@ const Restaurants = () => {
   return (
     <div>
       <Navbar active="restaurants" />
+      <h2>
+        {errorMessage}
+      </h2>
       <form onSubmit={handleSubmit}>
         <label>Search for</label>
         <input
