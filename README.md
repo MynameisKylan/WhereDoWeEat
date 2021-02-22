@@ -1,4 +1,6 @@
-# README
+#WhereDoWeEat
+
+An app made to help indecisive groups decide where to eat.
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
