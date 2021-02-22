@@ -44,10 +44,11 @@ const Rating = ({ name, score, price, categories, image }) => {
         <p>
           WDWE Party Score:{" "}
           <span className="star-wrapper">
+            <i className="far fa-star"></i> <i className="far fa-star"></i> <i className="far fa-star"></i> <i className="far fa-star"></i> <i className="far fa-star"></i>
             <span
               className="stars"
               style={{ width: (score / 5) * 100 + "%" }}
-            ></span>
+            ><i className="fas fa-star"></i> <i className="fas fa-star"></i> <i className="fas fa-star"></i> <i className="fas fa-star"></i> <i className="fas fa-star"></i></span>
           </span>
         </p>
         <p>Price Range: {price}</p>
