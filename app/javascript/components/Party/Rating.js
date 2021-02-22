@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import "./Rating.css";
 
 const RatingContainer = styled.div`
   border: 1px solid lightgrey;
@@ -10,7 +9,7 @@ const RatingContainer = styled.div`
   padding: 0.5em;
 
   @media (max-width: 750px) {
-    flex-direction:column;
+    flex-direction: column;
   }
 `;
 
@@ -33,7 +32,21 @@ const InfoCol = styled.div`
   @media (max-width: 750px) {
     width: 100%;
   }
-`
+`;
+
+const StarWrapper = styled.span`
+  position: relative;
+  display: inline-block;
+`;
+
+const Stars = styled.span`
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: gold;
+`;
 
 const Rating = ({ name, score, price, categories, image }) => {
   return (
@@ -43,13 +56,16 @@ const Rating = ({ name, score, price, categories, image }) => {
         <h3>{name}</h3>
         <p>
           WDWE Party Score:{" "}
-          <span className="star-wrapper">
-            <i className="far fa-star"></i> <i className="far fa-star"></i> <i className="far fa-star"></i> <i className="far fa-star"></i> <i className="far fa-star"></i>
-            <span
-              className="stars"
-              style={{ width: (score / 5) * 100 + "%" }}
-            ><i className="fas fa-star"></i> <i className="fas fa-star"></i> <i className="fas fa-star"></i> <i className="fas fa-star"></i> <i className="fas fa-star"></i></span>
-          </span>
+          <StarWrapper>
+            <i className="far fa-star"></i> <i className="far fa-star"></i>{" "}
+            <i className="far fa-star"></i> <i className="far fa-star"></i>{" "}
+            <i className="far fa-star"></i>
+            <Stars style={{ width: (score / 5) * 100 + "%" }}>
+              <i className="fas fa-star"></i> <i className="fas fa-star"></i>{" "}
+              <i className="fas fa-star"></i> <i className="fas fa-star"></i>{" "}
+              <i className="fas fa-star"></i>
+            </Stars>
+          </StarWrapper>
         </p>
         <p>Price Range: {price}</p>
         <p>{categories.map((cat) => cat["title"]).join(", ")}</p>
