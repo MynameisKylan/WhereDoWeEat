@@ -24,7 +24,7 @@ class FriendshipsController < ApplicationController
       else
         message = 'Could not add friend.'
       end
-    elsif friend.id == user_id
+    elsif friend && friend.id == user_id
       message = 'You cannot friend yourself.'
     else
       message = 'No user found with that username.'

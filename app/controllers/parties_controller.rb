@@ -43,7 +43,7 @@ class PartiesController < ApplicationController
   end
 
   def build_query_string(id_list)
-    graphql_fragment = ' fragment basicInfo on Business { name price categories {title} }'
+    graphql_fragment = ' fragment basicInfo on Business { name price photos categories {title} }'
     graphql_query = ''
     id_list.each.with_index do |id, idx|
       graphql_query += " b#{idx}: business(id: \"#{id}\") { ...basicInfo }"
