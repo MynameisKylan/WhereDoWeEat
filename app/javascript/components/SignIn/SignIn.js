@@ -32,34 +32,42 @@ const SignIn = (props) => {
           history.push("/");
         } else {
           setErrorMessage("Invalid email or password");
-          setUser({...user, password: ''})
+          setUser({ ...user, password: "" });
         }
       });
   };
 
   return (
-    <div>
-      <Header hasAccessToken={props.accessToken ? true : false} />
-      Sign In Page
-      {errorMessage ? <Error message={errorMessage} /> : null}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          value={user.email}
-          onChange={handleChange}
-          placeholder="Email Address"
-        />
-        <input
-          type="password"
-          name="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Password"
-        />
-        <button type="submit">Sign In</button>
-      </form>
-    </div>
+    <>
+      <div className="header">
+        <h1>WhereDoWeEat</h1>
+      </div>
+      <div className="content-wrapper">
+        <h2>Sign In</h2>
+        {errorMessage ? <Error message={errorMessage} /> : null}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="Email Address"
+          />
+          <br />
+          <input
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Password"
+          />
+          <br />
+          <button type="submit" className="register-button">
+            Sign In
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
+import './Navbar.css';
 import styled from "styled-components";
 
 const Nav = styled.nav`
@@ -7,20 +8,58 @@ const Nav = styled.nav`
   justify-content: space-between;
   max-width: 800px;
   margin: auto;
+  padding-bottom: 1em;
 `;
 
 const NavLink = styled(Link)`
   padding: 10px;
-  background: ${props => props.active ? `rgba(0,0,0,0.2)` : `rgba(0, 0, 0, 0.1);`};
   text-decoration: none;
-  color: black;
-  width: 120px;
+  color:white;
+  width: 22%;
   text-align: center;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  box-sizing: border-box;
+  height:56px;
+
+  border-bottom: ${props => props.active ? '5px solid red' : 'none'};
 
   &:hover {
-    opacity: 80%;
+    border-bottom: 5px solid red;
+    transition: 0.15s ease;
   }
 `;
+
+const LogoutButton = styled.button`
+  border: none;
+  padding: 10px;
+  width: 120px;
+  height: 56px;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 16px;
+  background:none;
+  position:absolute;
+  margin:10px;
+  top:0px;
+  right:0px;
+  border-radius:0;
+  color:white;
+
+  &:hover {
+    cursor:pointer;
+    border-bottom: 3px solid red;
+    transition: 0.15s ease;
+
+    .logout-icon {
+      color:red;
+    }
+  }
+
+  @media (max-width: 600px) {
+    margin-right:0;
+  }
+`
 
 const Navbar = (props) => {
   const history = useHistory();
@@ -33,18 +72,18 @@ const Navbar = (props) => {
   return (
     <Nav>
       <NavLink to={"/profile"} active={props.active === "profile" ? 'true' : undefined}>
-        Profile
+      <span><i className="fas fa-user-alt"></i> Profile</span>
       </NavLink>
       <NavLink to={"/party"} active={props.active === "party" ? 'true' : undefined}>
-        Create A Party
+        <span><i className="fas fa-users"></i> Create A Party</span>
       </NavLink>
       <NavLink to={"/restaurants"} active={props.active === "restaurants" ? 'true' : undefined}>
-        Rate Restaurants
+      <span><i className="fas fa-utensils"></i> Rate Restaurants</span>
       </NavLink>
       <NavLink to={"/friends"} active={props.active === "friends" ? 'true' : undefined}>
-        Add Friends
+      <span><i className="fas fa-user-friends"></i> Add Friends</span>
       </NavLink>
-      <button onClick={logout}>Logout</button>
+      <LogoutButton onClick={logout}>Logout <i className="fas fa-sign-out-alt logout-icon"></i></LogoutButton>
     </Nav>
   );
 };

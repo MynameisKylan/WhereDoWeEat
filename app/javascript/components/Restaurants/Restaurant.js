@@ -35,6 +35,39 @@ const RatingBox = styled.div`
   input:not(:checked) ~ label:hover ~ label {
     background-image: url("data:image/svg+xml;charset=UTF-8,${Hover}");
   }
+
+  @media (max-width: 600px) {
+    label {
+      width: 34px;
+      height: 34px;
+    }
+  }
+`;
+
+const RestaurantCard = styled.div`
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  margin: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 500px;
+
+  @media (max-width: 600px) {
+    font-size: 0.8em;
+  }
+`;
+
+const Image = styled.img`
+  width: 220px;
+  height: 220px;
+  border-radius: 5px;
+  object-fit: cover;
+
+  @media (max-width: 600px) {
+    width: 150px;
+    height: 150px;
+  }
 `;
 
 const Restaurant = ({ data }) => {
@@ -82,13 +115,17 @@ const Restaurant = ({ data }) => {
   });
 
   return (
-    <div>
-      {data.name}
+    <RestaurantCard>
+      <Image src={data.image_url} />
       <div>
-        <h3>Your Rating:</h3>
-        <RatingBox>{ratingOptions}</RatingBox>
+        <h2>{data.name}</h2>
+        <p>{data.categories.map((cat) => cat["title"]).join(", ")}</p>
+        <div>
+          <h3>Your Rating:</h3>
+          <RatingBox>{ratingOptions}</RatingBox>
+        </div>
       </div>
-    </div>
+    </RestaurantCard>
   );
 };
 

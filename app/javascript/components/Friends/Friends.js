@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Friend from "./Friend";
+import Header from "../Header";
 
 const Friends = () => {
   const [searchName, setSearchName] = useState("");
@@ -67,28 +68,34 @@ const Friends = () => {
   };
 
   return (
-    <div>
-      <Navbar active="friends" />
-      <div>{resultMessage}</div>
-      <h1>Find Friends By Username</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          value={searchName}
-          onChange={handleChange}
-          placeholder="Username"
-        />
-        <button type="submit">Add Friend</button>
-      </form>
-      <h1>Your Friends</h1>
-      {friends.map((friend) => (
-        <Friend
-          key={friend}
-          username={friend}
-          handleClick={() => handleClick(friend)}
-          action='Remove Friend'
-        />
-      ))}
-    </div>
+    <>
+      <div className="header">
+        <Header />
+        <Navbar active="friends" />
+      </div>
+      <div className="content-wrapper">
+        <h2>Find Friends By Username</h2>
+        <div>{resultMessage}</div>
+        <form onSubmit={handleSubmit}>
+          <input
+            value={searchName}
+            onChange={handleChange}
+            placeholder="Username"
+          />
+          <br />
+          <button type="submit">Add Friend</button>
+        </form>
+        <h2>Your Friends</h2>
+        {friends.map((friend) => (
+          <Friend
+            key={friend}
+            username={friend}
+            handleClick={() => handleClick(friend)}
+            action="Remove Friend"
+          />
+        ))}
+      </div>
+    </>
   );
 };
 

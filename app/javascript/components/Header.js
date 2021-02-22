@@ -1,12 +1,24 @@
 import React from 'react'
+import styled from 'styled-components';
 
-const Header = (props) => {
+const HeaderDiv = styled.div`
+  font-size: 2.5em;
+  margin: auto;
+  padding: 24px;
+  text-align:center;
+  font-family: 'Oswald', sans-serif;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+    text-align:left;
+  }
+`
+
+const Header = () => {
   return (
-    <div>
-      <h1>Where Do We Eat?</h1>
-      Has access token? {String(props.hasAccessToken)}
-      <h2>End header</h2>
-    </div>
+    <HeaderDiv>
+      WhereDoWeEat
+    </HeaderDiv>
   )
 }
 
