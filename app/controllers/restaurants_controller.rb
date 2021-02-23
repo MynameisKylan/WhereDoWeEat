@@ -1,7 +1,6 @@
 class RestaurantsController < ApplicationController
   def search
-    url = "https://api.yelp.com/v3/businesses/search?term=#{search_params[:term]}&location=#{search_params[:location]}&categories=food"
-    resp = Faraday.get(url) do |req|
+    resp = Faraday.get(search_url) do |req|
       req.headers['Authorization'] = "Bearer #{ENV['yelp_key']}"
     end
     user_id = decoded_token[0]['user_id']
@@ -22,6 +21,18 @@ class RestaurantsController < ApplicationController
   private
 
   def search_params
-    params.require(:search).permit(:term, :location)
+    params.require(:search).permit(:term, :location, :longitude, :latitude)
+  end
+
+  def search_url
+    base_url = "https://api.yelp.com/v3/businesses/search?"
+    query_string = "term=#{search_params[:term]}&categories=food"
+    if search_params[:longitude] && search_params[:latitude]
+      query_string += "&longitude=#{search_params[:longitude]}&latitude=#{search_params[:latitude]}"
+    else
+      query_string += "&location=#{search_params[:location]}"
+    end
+
+    base_url + query_string
   end
 end

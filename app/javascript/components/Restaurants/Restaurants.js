@@ -4,6 +4,7 @@ import Navbar from "../Navbar/Navbar";
 import Restaurant from "./Restaurant";
 import Header from "../Header";
 import styled from "styled-components";
+import Error from "../Error";
 
 const FormWrapper = styled.div`
   display: flex;
@@ -61,6 +62,17 @@ const Label = styled.label`
   align-items: center;
 `;
 
+const LocationButton = styled.button`
+  width: 30px;
+  justify-content: center;
+  height: 100%;
+  border-radius: 0;
+  font-size: 1.5em;
+  color: steelblue;
+  background: white;
+  margin: 1px;
+`;
+
 const SearchButton = styled.button`
   background: #d32323;
   width: 60px;
@@ -70,12 +82,13 @@ const SearchButton = styled.button`
   justify-content: center;
 
   &:hover {
-    opacity: 80%;
+    opacity: 85%;
     transition: 0.15s ease;
   }
 
   @media (max-width: 720px) {
     width: 40%;
+    border-radius: 3px;
   }
 `;
 
@@ -86,7 +99,12 @@ const RestaurantWrapper = styled.div`
 `;
 
 const Restaurants = () => {
-  const [searchParams, setSearchParams] = useState({ term: "", location: "" });
+  const [searchParams, setSearchParams] = useState({
+    term: "",
+    location: "",
+    latitude: null,
+    longitude: null,
+  });
   const [restaurants, setRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -116,6 +134,25 @@ const Restaurants = () => {
     }
   };
 
+  const getUserLocation = (e) => {
+    e.preventDefault();
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setSearchParams({
+          ...searchParams,
+          location: "Your Location",
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        });
+      },
+      (error) => {
+        console.log(error);
+        setErrorMessage("Could not get your location");
+      }
+    );
+  };
+
   const restaurantCards = restaurants.map((restaurant) => (
     <Restaurant key={restaurant.id} data={restaurant} />
   ));
@@ -131,7 +168,7 @@ const Restaurants = () => {
           Rate your favorite restaurants and we'll do the work of helping find
           the perfect restaurant for you and your party!
         </p>
-        {errorMessage ? <Error message={errorMessage} /> : null}
+        {errorMessage && <Error message={errorMessage} />}
         <FormWrapper>
           <Form onSubmit={handleSubmit}>
             <div>
@@ -151,6 +188,9 @@ const Restaurants = () => {
                 value={searchParams.location}
                 onChange={handleChange}
               />
+              <LocationButton onClick={getUserLocation}>
+                <i className="fas fa-map-marker-alt"></i>
+              </LocationButton>
             </div>
             <SearchButton type="submit">
               <i className="fas fa-search"></i>
