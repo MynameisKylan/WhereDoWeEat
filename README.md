@@ -1,26 +1,24 @@
-#WhereDoWeEat
+# WhereDoWeEat
 
-An app made to help indecisive groups decide where to eat.
+[Live](https://fast-shelf-07613.herokuapp.com)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An app made to help indecisive groups decide where to eat. Search and restaurant info powered by Yelp's [Fusion API](https://www.yelp.com/developers/documentation/v3).
 
-Things you may want to cover:
+Add friends, rate restaurants, and create a party to get personalized recommendations based on party members' tastes.
 
-* Ruby version
+Made with React backed by a Rails API.
 
-* System dependencies
+Bootstrapped with `rails new --webpack-react`
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+A lot of new topics were explored during development:
+- Using Rails API only mode
+- Configuring devise to respond with json
+- Sending AJAX requests with axios
+- Implementing token based authentication
+- Using serializers to selectively obtain information from database
+- Using Json Web Tokens for secure client side authentication storage
+- Configuring Rails to use React as the view layer
+- Routing and redirecting in React for a single page application
+- Authenticating routes in React
+- Building GraphQL queries
+- Deploying to heroku as a single application using multiple buildpacks
