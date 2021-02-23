@@ -188,7 +188,7 @@ const Restaurants = () => {
                 value={searchParams.location}
                 onChange={handleChange}
               />
-              <LocationButton onClick={getUserLocation}>
+              <LocationButton type='button' onClick={getUserLocation}>
                 <i className="fas fa-map-marker-alt"></i>
               </LocationButton>
             </div>
