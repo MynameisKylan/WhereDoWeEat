@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import lodash from "lodash";
+import _ from "lodash";
 
 import Header from "../Header";
 import Error from "../Error";
@@ -22,13 +22,11 @@ const SignUp = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("ATTEMPTING TO CREATE USER:");
     axios
       .post("/users", {
         user: user,
       })
       .then((resp) => {
-        console.log(resp);
         if (resp.data.token) {
           const token = resp.data.token;
           props.setAccessToken(token);
@@ -37,6 +35,7 @@ const SignUp = (props) => {
           // Redirects to home after retrieving token
           history.push("/");
         } else {
+          console.log(resp)
           setErrors(resp.data.errors);
           setUser({ ...user, password: "", password_confirmation: "" });
         }
@@ -47,11 +46,7 @@ const SignUp = (props) => {
   if (errors) {
     const keys = Object.keys(errors);
     errorComponents = keys.map((key) => {
-      const message = `${key
-        .replace("_", " ")
-        .split(" ")
-        .map((s) => _.capitalize(s))
-        .join(" ")} ${errors[key]}`;
+      const message = `${errors[key]}`;
       return <Error key={key} message={message} />;
     });
   }

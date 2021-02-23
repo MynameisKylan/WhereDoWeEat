@@ -27,7 +27,7 @@ class RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      render json: { errors: resource.errors }
+      render json: { errors: resource.errors.to_a }
     end
   end
 end
