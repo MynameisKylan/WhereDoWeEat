@@ -82,7 +82,7 @@ const Friends = () => {
             placeholder="Username"
           />
           <br />
-          <button type="submit">Add Friend</button>
+          <button style={{background: '#d32323'}} type="submit">Add Friend</button>
         </form>
         <h2>Your Friends</h2>
         {friends.map((friend) => (

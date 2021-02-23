@@ -74,14 +74,14 @@ const Navbar = (props) => {
       <NavLink to={"/profile"} active={props.active === "profile" ? 'true' : undefined}>
       <span><i className="fas fa-user-alt"></i> Profile</span>
       </NavLink>
-      <NavLink to={"/party"} active={props.active === "party" ? 'true' : undefined}>
-        <span><i className="fas fa-users"></i> Create A Party</span>
+      <NavLink to={"/friends"} active={props.active === "friends" ? 'true' : undefined}>
+      <span><i className="fas fa-user-friends"></i> Add Friends</span>
       </NavLink>
       <NavLink to={"/restaurants"} active={props.active === "restaurants" ? 'true' : undefined}>
       <span><i className="fas fa-utensils"></i> Rate Restaurants</span>
       </NavLink>
-      <NavLink to={"/friends"} active={props.active === "friends" ? 'true' : undefined}>
-      <span><i className="fas fa-user-friends"></i> Add Friends</span>
+      <NavLink to={"/party"} active={props.active === "party" ? 'true' : undefined}>
+        <span><i className="fas fa-users"></i> Create A Party</span>
       </NavLink>
       <LogoutButton onClick={logout}>Logout <i className="fas fa-sign-out-alt logout-icon"></i></LogoutButton>
     </Nav>

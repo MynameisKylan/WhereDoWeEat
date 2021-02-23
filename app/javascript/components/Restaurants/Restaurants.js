@@ -80,10 +80,10 @@ const SearchButton = styled.button`
 `;
 
 const RestaurantWrapper = styled.div`
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-around;
-`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+`;
 
 const Restaurants = () => {
   const [searchParams, setSearchParams] = useState({ term: "", location: "" });
@@ -97,21 +97,23 @@ const Restaurants = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // add client side validation
-
-    axios
-      .post(
-        "/restaurants/search",
-        { search: searchParams },
-        { headers: { Authorization: localStorage.getItem("token") } }
-      )
-      .then((resp) => {
-        if (resp.data.error) {
-          setErrorMessage(resp.data.error);
-        } else {
-          setRestaurants(resp.data);
-        }
-      });
+    if (!searchParams.location) {
+      setErrorMessage("Must Specify Search Location");
+    } else {
+      axios
+        .post(
+          "/restaurants/search",
+          { search: searchParams },
+          { headers: { Authorization: localStorage.getItem("token") } }
+        )
+        .then((resp) => {
+          if (resp.data.error) {
+            setErrorMessage(resp.data.error);
+          } else {
+            setRestaurants(resp.data);
+          }
+        });
+    }
   };
 
   const restaurantCards = restaurants.map((restaurant) => (

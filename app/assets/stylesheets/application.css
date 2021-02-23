@@ -92,6 +92,8 @@ button {
   border-radius: 5px;
   box-sizing:border-box;
   outline:none;
+  color:white;
+  background: rgb(160, 160, 160);
 }
 
 button:hover {

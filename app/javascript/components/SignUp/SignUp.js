@@ -35,7 +35,6 @@ const SignUp = (props) => {
           // Redirects to home after retrieving token
           history.push("/");
         } else {
-          console.log(resp)
           setErrors(resp.data.errors);
           setUser({ ...user, password: "", password_confirmation: "" });
         }

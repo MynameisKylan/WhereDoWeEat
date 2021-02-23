@@ -119,7 +119,7 @@ const Party = () => {
             <h2>Your Party</h2>
             {partyList}
             <br />
-            <button onClick={findRestaurants}>Find Restaurants</button>
+            <button style={{background: '#d32323'}} onClick={findRestaurants}>Find Restaurants</button>
             <h2>Add Friends</h2>
             {friendsList}
           </PartyCol>
