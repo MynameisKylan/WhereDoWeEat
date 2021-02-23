@@ -110,7 +110,6 @@ const Restaurants = () => {
           setErrorMessage(resp.data.error);
         } else {
           setRestaurants(resp.data);
-          console.log(resp.data)
         }
       });
   };

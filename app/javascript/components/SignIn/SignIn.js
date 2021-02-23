@@ -24,7 +24,6 @@ const SignIn = (props) => {
         user: user,
       })
       .then((resp) => {
-        console.log(resp);
         if (resp.data.token) {
           const token = resp.data.token;
           props.setAccessToken(token);

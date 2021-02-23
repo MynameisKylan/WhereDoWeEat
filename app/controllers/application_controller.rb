@@ -19,17 +19,6 @@ class ApplicationController < ActionController::API
     end
   end
 
-  # def authenticate_user_from_token!
-  #   auth_header = request.authorization
-
-  #   if auth_token
-  #     token = auth_header.split(' ')[1]
-  #     authenticate_with_auth_token(token)
-  #   else
-  #     authentication_error
-  #   end
-  # end
-
   protected def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
@@ -50,23 +39,4 @@ class ApplicationController < ActionController::API
   def authorized
     render json: { error: 'Unauthorized. Please log in' }, status: :unauthorized unless logged_in?
   end
-
-  # def authenticate_with_auth_token(auth_token)
-  #   user_id = auth_token.split(':').first
-  #   user = User.where(id: user_id).first
-
-  #   if user && Devise.secure_compare(user.access_token, auth_token)
-  #     # user can access
-  #     sign_in(user, store: false) # don't know what store: false does yet
-  #   else
-  #     authentication_error
-  #   end
-  # end
-
-  # # Authentication Failure
-  # # Renders a 401 error
-  # def authentication_error
-  #   # User's token is either invalid or not the right format
-  #   render json: { error: 'Unauthorized' }, status: 401 # Authentication timeout
-  # end
 end

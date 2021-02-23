@@ -58,7 +58,6 @@ const Friends = () => {
         { headers: { Authorization: localStorage.getItem("token") } }
       )
       .then((resp) => {
-        console.log(resp);
         removeFriend(username);
         setResultMessage(resp.data.message);
       })

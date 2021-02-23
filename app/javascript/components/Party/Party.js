@@ -80,7 +80,6 @@ const Party = () => {
         }
       )
       .then((resp) => {
-        console.log(resp);
         setRestaurants(resp.data);
       });
   };
