@@ -10,7 +10,7 @@ const ColWrapper = styled.div`
   display: flex;
 
   @media (max-width: 600px) {
-    flex-direction:column;
+    flex-direction: column;
   }
 `;
 
@@ -35,6 +35,7 @@ const Party = () => {
   const [friends, setFriends] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [user, setUser] = useState("");
+  const [location, setLocation] = useState("");
 
   // set current user and party on initial load
   useEffect(() => {
@@ -70,11 +71,15 @@ const Party = () => {
     setFriends([...friends, username]);
   };
 
+  const handleChange = (e) => {
+    setLocation(e.target.value);
+  };
+
   const findRestaurants = () => {
     axios
       .post(
         "/party/search",
-        { party: party },
+        { party: party, location: location },
         {
           headers: { Authorization: localStorage.getItem("token") },
         }
@@ -119,7 +124,17 @@ const Party = () => {
             <h2>Your Party</h2>
             {partyList}
             <br />
-            <button style={{background: '#d32323'}} onClick={findRestaurants}>Find Restaurants</button>
+            <label>Location (Optional)</label>
+            <br />
+            <input
+              onChange={handleChange}
+              value={location}
+              placeholder="city, zip code, address..."
+            />
+            <br />
+            <button style={{ background: "#d32323" }} onClick={findRestaurants}>
+              Find Restaurants
+            </button>
             <h2>Add Friends</h2>
             {friendsList}
           </PartyCol>
