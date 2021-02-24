@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Restaurant from "./Restaurant";
 import Header from "../Header";
 import styled from "styled-components";
 import Error from "../Error";
+import _ from "lodash";
 
 const FormWrapper = styled.div`
   display: flex;
@@ -99,17 +100,35 @@ const RestaurantWrapper = styled.div`
 `;
 
 const Restaurants = () => {
-  // State
-  const [searchParams, setSearchParams] = useState({
+  // States
+  const [searchParams, _setSearchParams] = useState({
     term: "",
     location: "",
     latitude: null,
     longitude: null,
     offset: 0,
   });
-  const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, _setRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Ref allows retrieval of current searchParams in event listener
+  const searchParamsRef = useRef(searchParams);
+
+  // Update both searchParams state and searchParamsRef value
+  const setSearchParams = (data) => {
+    _setSearchParams(data);
+    searchParamsRef.current = data;
+  };
+
+  // Ref allows retrieval of current restaurants in event listener
+  const restaurantsRef = useRef(restaurants);
+
+  // Update both resturants state and restaurantsRef value
+  const setRestaurants = (data) => {
+    _setRestaurants(data);
+    restaurantsRef.current = data;
+  };
 
   // Form handler
   const handleChange = (e) => {
@@ -120,7 +139,7 @@ const Restaurants = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setScrollPosition(0);
-    setErrorMessage('');
+    setErrorMessage("");
 
     if (!searchParams.location) {
       setErrorMessage("Must Specify Search Location");
@@ -162,29 +181,51 @@ const Restaurants = () => {
     );
   };
 
-  // Load more handler
-  const loadMore = () => {
+  // Load more handler - throttled to prevent multiple calls when reaching end of page
+  // {leading:true, trailing: false} calls function and ignores subsequent calls for the timeout duration,
+  // allowing time for DOM to update
+  const loadMore = _.throttle(() => {
+    console.log('called')
     setScrollPosition(window.pageYOffset);
     axios
       .post(
         "/restaurants/search",
-        { search: searchParams },
+        { search: searchParamsRef.current },
         { headers: { Authorization: localStorage.getItem("token") } }
       )
       .then((resp) => {
         if (resp.data.error) {
           setErrorMessage(resp.data.error);
+          window.scrollTo(0, 0);
         } else {
-          setRestaurants([...restaurants, ...resp.data]);
-          setSearchParams({ ...searchParams, offset: searchParams.offset + 1 });
+          setRestaurants([...restaurantsRef.current, ...resp.data]);
+          setSearchParams({
+            ...searchParamsRef.current,
+            offset: searchParamsRef.current.offset + 1,
+          });
         }
       });
-  };
+  }, 4000, {leading: true, trailing: false});
 
   // Maintain scroll position when loading more restaurants
   useEffect(() => {
     window.scrollTo(0, scrollPosition);
-  }, [restaurants])
+  }, [restaurants]);
+
+  // Endless scroll: call loadMore on reaching page end
+  const loadMoreIfBottom = _.throttle(() => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      loadMore();
+    }
+  }, 250);
+
+  // Setup event listener for endless scroll
+  useEffect(() => {
+    window.addEventListener("scroll", loadMoreIfBottom);
+    return () => {
+      window.removeEventListener("scroll", loadMoreIfBottom);
+    };
+  }, []);
 
   const restaurantCards = restaurants.map((restaurant) => (
     <Restaurant key={restaurant.id} data={restaurant} />
@@ -232,7 +273,11 @@ const Restaurants = () => {
         </FormWrapper>
         <RestaurantWrapper>{restaurantCards}</RestaurantWrapper>
         {restaurants.length > 0 && (
-          <button type="button" onClick={loadMore} style={{marginBottom: 2 + 'em', background: '#d32323'}}>
+          <button
+            type="button"
+            onClick={loadMore}
+            style={{ marginBottom: 2 + "em", background: "#d32323" }}
+          >
             Load More
           </button>
         )}
