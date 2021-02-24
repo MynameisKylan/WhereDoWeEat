@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Restaurant from "./Restaurant";
@@ -99,21 +99,28 @@ const RestaurantWrapper = styled.div`
 `;
 
 const Restaurants = () => {
+  // State
   const [searchParams, setSearchParams] = useState({
     term: "",
     location: "",
     latitude: null,
     longitude: null,
+    offset: 0,
   });
   const [restaurants, setRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [scrollPosition, setScrollPosition] = useState(0);
 
+  // Form handler
   const handleChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
   };
 
+  // Submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
+    setScrollPosition(0);
+    setErrorMessage('');
 
     if (!searchParams.location) {
       setErrorMessage("Must Specify Search Location");
@@ -129,11 +136,13 @@ const Restaurants = () => {
             setErrorMessage(resp.data.error);
           } else {
             setRestaurants(resp.data);
+            setSearchParams({ ...searchParams, offset: 1 });
           }
         });
     }
   };
 
+  // Current Location Handler
   const getUserLocation = (e) => {
     e.preventDefault();
 
@@ -152,6 +161,30 @@ const Restaurants = () => {
       }
     );
   };
+
+  // Load more handler
+  const loadMore = () => {
+    setScrollPosition(window.pageYOffset);
+    axios
+      .post(
+        "/restaurants/search",
+        { search: searchParams },
+        { headers: { Authorization: localStorage.getItem("token") } }
+      )
+      .then((resp) => {
+        if (resp.data.error) {
+          setErrorMessage(resp.data.error);
+        } else {
+          setRestaurants([...restaurants, ...resp.data]);
+          setSearchParams({ ...searchParams, offset: searchParams.offset + 1 });
+        }
+      });
+  };
+
+  // Maintain scroll position when loading more restaurants
+  useEffect(() => {
+    window.scrollTo(0, scrollPosition);
+  }, [restaurants])
 
   const restaurantCards = restaurants.map((restaurant) => (
     <Restaurant key={restaurant.id} data={restaurant} />
@@ -188,7 +221,7 @@ const Restaurants = () => {
                 value={searchParams.location}
                 onChange={handleChange}
               />
-              <LocationButton type='button' onClick={getUserLocation}>
+              <LocationButton type="button" onClick={getUserLocation}>
                 <i className="fas fa-map-marker-alt"></i>
               </LocationButton>
             </div>
@@ -198,6 +231,11 @@ const Restaurants = () => {
           </Form>
         </FormWrapper>
         <RestaurantWrapper>{restaurantCards}</RestaurantWrapper>
+        {restaurants.length > 0 && (
+          <button type="button" onClick={loadMore} style={{marginBottom: 2 + 'em', background: '#d32323'}}>
+            Load More
+          </button>
+        )}
       </div>
     </div>
   );
