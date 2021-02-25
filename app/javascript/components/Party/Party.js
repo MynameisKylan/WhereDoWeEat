@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Friend from "../Friends/Friend";
@@ -30,12 +30,48 @@ const ResultCol = styled.div`
   }
 `;
 
+const PriceBox = styled.div`
+  padding: 1em;
+  margin-bottom: 0.5em;
+
+  input {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  label {
+    cursor: pointer;
+    padding: 0.3em;
+    border-right: 1px solid lightgrey;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &:hover,
+    &:active {
+      border-bottom: 3px solid #d32323;
+    }
+  }
+
+  input:checked + label {
+    border-bottom: 3px solid #d32323;
+  }
+`;
+
 const Party = () => {
-  const [party, setParty] = useState([]);
+  const [searchParams, setSearchParams] = useState({
+    party: [],
+    location: "",
+    price: null,
+  });
+  // const [party, setParty] = useState([]);
   const [friends, setFriends] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [user, setUser] = useState("");
-  const [location, setLocation] = useState("");
+  // const [location, setLocation] = useState("");
+  // const [price, setPrice] = useState(null);
 
   // set current user and party on initial load
   useEffect(() => {
@@ -46,7 +82,7 @@ const Party = () => {
       .then((resp) => {
         const username = resp.data.data.attributes.username;
         setUser(username);
-        setParty([...party, username]);
+        setSearchParams({ ...searchParams, party: [username] });
       });
   }, []);
 
@@ -61,30 +97,51 @@ const Party = () => {
       });
   }, []);
 
+  // Add user to party
   const addToParty = (username) => {
-    setParty([...party, username]);
+    setSearchParams({
+      ...searchParams,
+      party: [...searchParams.party, username],
+    });
     setFriends(friends.filter((friend) => friend !== username));
   };
 
+  // Remove user from party
   const removeFromParty = (username) => {
-    setParty(party.filter((friend) => friend !== username));
+    const newParty = searchParams.party.filter((friend) => friend !== username);
+    setSearchParams({ ...searchParams, party: newParty });
     setFriends([...friends, username]);
   };
 
+  // Form input handler
   const handleChange = (e) => {
-    setLocation(e.target.value);
+    setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+  };
+
+  const handleClick = (price) => {
+    if (searchParams.price === price) {
+      // Un-Select
+      setSearchParams({ ...searchParams, price: null });
+    } else {
+      setSearchParams({ ...searchParams, price: price });
+    }
   };
 
   const findRestaurants = () => {
     axios
       .post(
         "/party/search",
-        { party: party, location: location },
+        {
+          party: searchParams.party,
+          location: searchParams.location,
+          price: searchParams.price,
+        },
         {
           headers: { Authorization: localStorage.getItem("token") },
         }
       )
       .then((resp) => {
+        console.log(resp)
         setRestaurants(resp.data);
       });
   };
@@ -99,7 +156,7 @@ const Party = () => {
     />
   ));
 
-  const partyList = party.map((friend) => (
+  const partyList = searchParams.party.map((friend) => (
     <Friend
       key={friend}
       username={friend}
@@ -108,6 +165,22 @@ const Party = () => {
       self={friend == user}
     />
   ));
+
+  const priceOptions = [1, 2, 3, 4].map((price) => {
+    return (
+      <Fragment key={price}>
+        <input
+          type="radio"
+          value={price}
+          name={`price`}
+          id={`price-${price}`}
+          checked={searchParams.price === price}
+          onChange={() => {}}
+        />
+        <label onClick={() => handleClick(price)}>{"$".repeat(price)}</label>
+      </Fragment>
+    );
+  });
 
   return (
     <>
@@ -124,21 +197,26 @@ const Party = () => {
             <h2>Your Party</h2>
             {partyList}
             <br />
-            <label>Location (Optional)</label>
-            <br />
-            <input
-              onChange={handleChange}
-              value={location}
-              placeholder="city, zip code, address..."
-            />
-            <br />
-            <button style={{ background: "#d32323" }} onClick={findRestaurants}>
-              Find Restaurants
-            </button>
             <h2>Add Friends</h2>
             {friendsList}
           </PartyCol>
           <ResultCol>
+            <h2>Search Options</h2>
+            <label>Location</label>
+            <br />
+            <input
+              name="location"
+              onChange={handleChange}
+              value={searchParams.location}
+              placeholder="city, zip code, address..."
+            />
+            <br />
+            <label>Price</label>
+            <PriceBox>{priceOptions}</PriceBox>
+
+            <button style={{ background: "#d32323" }} onClick={findRestaurants}>
+              Find Restaurants
+            </button>
             <h2>Results</h2>
             {restaurants.map((res) => (
               <Rating

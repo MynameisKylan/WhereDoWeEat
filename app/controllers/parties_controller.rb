@@ -19,7 +19,7 @@ class PartiesController < ApplicationController
 
     append_data(resp, sorted)
 
-    result = party_params[:location].empty? ? sorted : filter_by_location(sorted, party_params[:location])
+    result = filter_restaurants(sorted, {location: party_params[:location], price: party_params[:price]})
 
     render json: result
   end
@@ -27,7 +27,7 @@ class PartiesController < ApplicationController
   private
 
   def party_params
-    params.permit(:location, party: [])
+    params.permit(:location, :price, party: [])
   end
 
   # Sort restaurants by calculated weighted rating
@@ -63,13 +63,24 @@ class PartiesController < ApplicationController
     end
   end
 
-  def filter_by_location(restaurant_list, location)
-    user_coords = Geocoder.search(location).first.coordinates
+  # filters should be a hash of (filter_param, value) pairs
+  def filter_restaurants(restaurant_list, filters)
+    user_coords = filters[:location].empty? ? nil : Geocoder.search(filters[:location]).first.coordinates 
 
     restaurant_list.filter do |res|
-      res_coords = [res['data']['coordinates']['latitude'], res['data']['coordinates']['longitude']]
-      distance = Geocoder::Calculations.distance_between(user_coords, res_coords)
-      distance < 6
+      keep = true
+
+      if user_coords
+        res_coords = [res['data']['coordinates']['latitude'], res['data']['coordinates']['longitude']]
+        distance = Geocoder::Calculations.distance_between(user_coords, res_coords)
+        keep = false unless distance < 5
+      end
+
+      if filters[:price]
+        keep = false unless res['data']['price'] == ('$' * filters[:price])
+      end
+
+      keep
     end
   end
 end
