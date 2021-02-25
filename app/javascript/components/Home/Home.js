@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../Header";
+import Navbar from '../Navbar/Navbar';
 import styled from "styled-components";
 
 const WelcomeButtons = styled.div`
@@ -46,24 +47,38 @@ const Headline = styled.p`
 `;
 
 const Home = (props) => {
+  // Set token as state to trigger re-render on logout (deletion of token from localStorage)
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('token'))
+
+  const header = accessToken ? (
+    <div className="header">
+      <Header />
+      <Navbar active="home" />
+    </div>
+  ) : (
+    <div className="header">
+      <Header />
+      <WelcomeButtons>
+        <NavLink to={"/signup"}>Sign Up</NavLink>
+        <span>
+          <Question>Already have an account?</Question>{" "}
+          <NavLink to={"/signin"}>Sign In</NavLink>
+        </span>
+      </WelcomeButtons>
+      <Headline>
+        WhereDoWeEat helps you find the perfect restaurant to help your party
+        answer the age old question: Where do we eat?
+      </Headline>
+    </div>
+  );
+
   return (
     <>
-      <div className="header">
-        <Header />
-        <WelcomeButtons>
-          <NavLink to={"/signup"}>Sign Up</NavLink>
-          <span>
-            <Question>Already have an account?</Question>{" "}
-            <NavLink to={"/signin"}>Sign In</NavLink>
-          </span>
-        </WelcomeButtons>
-        <Headline>
-          WhereDoWeEat helps you find the perfect restaurant to help your party
-          answer the age old question: Where do we eat?
-        </Headline>
-      </div>
+      {header}
       <div className="welcome-wrapper">
-        <h2 style={{paddingBottom: 0.2 + 'em', paddingTop: 0.7 + 'em'}}>How It Works</h2>
+        <h2 style={{ paddingBottom: 0.2 + "em", paddingTop: 0.7 + "em" }}>
+          How It Works
+        </h2>
         <ol>
           <li>
             <h3>Rate Local Restaurants</h3>

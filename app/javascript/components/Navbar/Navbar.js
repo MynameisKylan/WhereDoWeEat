@@ -71,6 +71,9 @@ const Navbar = (props) => {
 
   return (
     <Nav>
+      <NavLink to={'/'} active={props.active === 'home' ? 'true' : undefined}>
+      <span><i className="fas fa-home"></i> Home</span>
+      </NavLink>
       <NavLink to={"/profile"} active={props.active === "profile" ? 'true' : undefined}>
       <span><i className="fas fa-user-alt"></i> Profile</span>
       </NavLink>

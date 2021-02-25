@@ -35,13 +35,9 @@ const App = () => {
       <Route
         exact
         path="/"
-        render={() =>
-          localStorage.getItem("token") ? (
-            <Redirect to="/profile" />
-          ) : (
-            <Home setAccessToken={setAccessToken} accessToken={accessToken} />
-          )
-        }
+        render={() => (
+          <Home setAccessToken={setAccessToken} accessToken={accessToken} />
+        )}
       />
       <Route
         exact
