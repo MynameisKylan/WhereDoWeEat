@@ -97,6 +97,23 @@ const Restaurant = ({ data }) => {
     }
   };
 
+  // Title text for star ratings
+  const ratingText = (score) => {
+    switch (score) {
+      case 5:
+        return "Love it";
+      case 4:
+        return "Pretty Good";
+      case 3:
+        return "Not Bad";
+      case 2:
+        return "Not Very Good";
+      case 1:
+        return "Terrible";
+    }
+  };
+
+  // Star rating UI
   const ratingOptions = [5, 4, 3, 2, 1].map((score, index) => {
     return (
       <Fragment key={score}>
@@ -109,7 +126,7 @@ const Restaurant = ({ data }) => {
           checked={rating === score}
           onChange={() => {}}
         />
-        <label onClick={() => handleClick(score)}></label>
+        <label title={ratingText(score)} onClick={() => handleClick(score)}></label>
       </Fragment>
     );
   });
@@ -119,9 +136,10 @@ const Restaurant = ({ data }) => {
       <Image src={data.image_url} />
       <div>
         <h2>{data.name}</h2>
+        <a href={data.url} target='_blank' rel='noopener noreferrer'>Yelp Page <i className="fas fa-external-link-alt"></i></a>
         <p>{data.categories.map((cat) => cat["title"]).join(", ")}</p>
         <div>
-          <h3>Your Rating:</h3>
+          <h3>{rating ? "Your Rating:" : "Click to Rate:"}</h3>
           <RatingBox>{ratingOptions}</RatingBox>
         </div>
       </div>

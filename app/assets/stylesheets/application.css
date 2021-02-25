@@ -17,7 +17,7 @@
 body {
   font-family: "Nanum Gothic", sans-serif;
   background: #feffff;
-  text-align:center;
+  text-align: center;
 }
 
 h1,
@@ -36,15 +36,16 @@ h2 {
 }
 
 .header {
-  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
   background-position: center 50%;
-  background-repeat:no-repeat;
-  background-size:cover;
-  color:white;
-  position:fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  position: fixed;
   width: 100%;
-  top:0;
-  z-index:100;
+  top: 0;
+  z-index: 100;
 }
 
 .content-wrapper,
@@ -53,12 +54,11 @@ h2 {
   max-width: 1200px;
   text-align: center;
   padding: 0.5em;
-  margin-top:160px;
+  margin-top: 160px;
 }
 
 .welcome-wrapper {
   margin-top: 260px;
-
 }
 
 @media (max-width: 600px) {
@@ -88,16 +88,16 @@ button:focus {
 
 button {
   padding: 0.7em;
-  border:none;
+  border: none;
   border-radius: 5px;
-  box-sizing:border-box;
-  outline:none;
-  color:white;
+  box-sizing: border-box;
+  outline: none;
+  color: white;
   background: rgb(160, 160, 160);
 }
 
 button:hover {
-  cursor:pointer;
+  cursor: pointer;
   opacity: 80%;
   transition: 0.3s ease;
 }
@@ -111,4 +111,8 @@ button:hover {
   width: 200px;
   box-sizing: border-box;
   font-weight: bold;
+}
+
+a {
+  text-decoration: none;
 }

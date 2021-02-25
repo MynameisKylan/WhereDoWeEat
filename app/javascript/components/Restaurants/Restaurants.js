@@ -205,7 +205,7 @@ const Restaurants = () => {
           });
         }
       });
-  }, 4000, {leading: true, trailing: false});
+  }, 5000, {leading: true, trailing: false});
 
   // Maintain scroll position when loading more restaurants
   useEffect(() => {
