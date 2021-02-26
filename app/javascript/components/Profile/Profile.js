@@ -36,7 +36,6 @@ const Profile = () => {
         headers: { Authorization: localStorage.getItem("token") },
       })
       .then((resp) => {
-        console.log(resp)
         localStorage.removeItem('token');
         history.push("/");
       });

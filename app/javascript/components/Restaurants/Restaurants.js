@@ -185,7 +185,6 @@ const Restaurants = () => {
   // {leading:true, trailing: false} calls function and ignores subsequent calls for the timeout duration,
   // allowing time for DOM to update
   const loadMore = _.throttle(() => {
-    console.log('called')
     setScrollPosition(window.pageYOffset);
     axios
       .post(

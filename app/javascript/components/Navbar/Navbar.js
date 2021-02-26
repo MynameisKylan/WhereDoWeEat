@@ -15,7 +15,7 @@ const NavLink = styled(Link)`
   padding: 10px;
   text-decoration: none;
   color:white;
-  width: 22%;
+  width: 20%;
   text-align: center;
   display:flex;
   align-items:center;
@@ -28,6 +28,10 @@ const NavLink = styled(Link)`
   &:hover {
     border-bottom: 5px solid red;
     transition: 0.15s ease;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.9em;
   }
 `;
 
@@ -78,13 +82,13 @@ const Navbar = (props) => {
       <span><i className="fas fa-user-alt"></i> Profile</span>
       </NavLink>
       <NavLink to={"/friends"} active={props.active === "friends" ? 'true' : undefined}>
-      <span><i className="fas fa-user-friends"></i> Add Friends</span>
+      <span><i className="fas fa-user-friends"></i> Friends</span>
       </NavLink>
       <NavLink to={"/restaurants"} active={props.active === "restaurants" ? 'true' : undefined}>
       <span><i className="fas fa-utensils"></i> Rate Restaurants</span>
       </NavLink>
       <NavLink to={"/party"} active={props.active === "party" ? 'true' : undefined}>
-        <span><i className="fas fa-users"></i> Create A Party</span>
+        <span><i className="fas fa-users"></i> Party</span>
       </NavLink>
       <LogoutButton onClick={logout}>Logout <i className="fas fa-sign-out-alt logout-icon"></i></LogoutButton>
     </Nav>

@@ -99,7 +99,7 @@ button {
 button:hover {
   cursor: pointer;
   opacity: 80%;
-  transition: 0.3s ease;
+  transition: 0.15s ease;
 }
 
 .register-button {

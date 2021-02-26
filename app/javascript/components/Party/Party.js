@@ -2,8 +2,8 @@ import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Friend from "../Friends/Friend";
-import Rating from "./Rating";
 import Header from "../Header";
+import Results from './Results';
 import styled from "styled-components";
 
 const ColWrapper = styled.div`
@@ -43,7 +43,7 @@ const PriceBox = styled.div`
   label {
     cursor: pointer;
     padding: 0.3em;
-    border-right: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;92126
 
     &:last-child {
       border-right: none;
@@ -66,12 +66,10 @@ const Party = () => {
     location: "",
     price: null,
   });
-  // const [party, setParty] = useState([]);
   const [friends, setFriends] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [user, setUser] = useState("");
-  // const [location, setLocation] = useState("");
-  // const [price, setPrice] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
   // set current user and party on initial load
   useEffect(() => {
@@ -141,7 +139,8 @@ const Party = () => {
         }
       )
       .then((resp) => {
-        setRestaurants(resp.data);
+        setRestaurants(resp.data.results);
+        setSuggestions(resp.data.suggestions);
       });
   };
 
@@ -216,17 +215,7 @@ const Party = () => {
             <button style={{ background: "#d32323" }} onClick={findRestaurants}>
               Find Restaurants
             </button>
-            <h2>Results</h2>
-            {restaurants.map((res) => (
-              <Rating
-                key={res.data.name}
-                name={res.data.name}
-                score={res.weighted_rating}
-                price={res.data.price}
-                categories={res.data.categories}
-                image={res.data.photos[0]}
-              />
-            ))}
+            {restaurants.length > 0 && <Results restaurants={restaurants} suggestions={suggestions} />}
           </ResultCol>
         </ColWrapper>
       </div>

@@ -48,14 +48,14 @@ const Stars = styled.span`
   color: gold;
 `;
 
-const Rating = ({ name, score, price, categories, image }) => {
+const Rating = ({ scoreName, name, score, price, categories, image, url }) => {
   return (
     <RatingContainer>
       <Image src={image} />
       <InfoCol>
         <h3>{name}</h3>
         <p>
-          WDWE Party Score:{" "}
+          {scoreName}{" "}
           <StarWrapper>
             <i className="far fa-star"></i> <i className="far fa-star"></i>{" "}
             <i className="far fa-star"></i> <i className="far fa-star"></i>{" "}
@@ -66,6 +66,7 @@ const Rating = ({ name, score, price, categories, image }) => {
               <i className="fas fa-star"></i>
             </Stars>
           </StarWrapper>
+          {url && <a href={url} target='_blank' rel='noopener noreferrer'>Yelp Page <i className="fas fa-external-link-alt"></i></a>}
         </p>
         <p>Price Range: {price}</p>
         <p>{categories.map((cat) => cat["title"]).join(", ")}</p>

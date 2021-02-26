@@ -25,13 +25,13 @@ class RestaurantsController < ApplicationController
   end
 
   def search_url
-    base_url = "https://api.yelp.com/v3/businesses/search?"
+    base_url = 'https://api.yelp.com/v3/businesses/search?'
     query_string = "term=#{search_params[:term]}&categories=food,restaurants&offset=#{search_params[:offset] * 20}"
-    if search_params[:longitude] && search_params[:latitude]
-      query_string += "&longitude=#{search_params[:longitude]}&latitude=#{search_params[:latitude]}"
-    else
-      query_string += "&location=#{search_params[:location]}"
-    end
+    query_string += if search_params[:longitude] && search_params[:latitude]
+                      "&longitude=#{search_params[:longitude]}&latitude=#{search_params[:latitude]}"
+                    else
+                      "&location=#{search_params[:location]}"
+                    end
 
     base_url + query_string
   end
