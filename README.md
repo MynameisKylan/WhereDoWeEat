@@ -1,7 +1,5 @@
 # WhereDoWeEat
 
-[Live](https://fast-shelf-07613.herokuapp.com)
-
 An app made to help indecisive groups decide where to eat. Search and restaurant info powered by Yelp's [Fusion API](https://www.yelp.com/developers/documentation/v3).
 
 Add friends, rate restaurants, and create a party to get personalized recommendations based on party members' tastes.
